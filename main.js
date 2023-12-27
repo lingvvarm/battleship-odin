@@ -116,7 +116,27 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n\n\n\n\n//# sourceURL=webpack://battleship-odin/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _modules_gameboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/gameboard */ \"./src/modules/gameboard.js\");\n\n\n\nlet board = new _modules_gameboard__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\n\nboard.place_ship(6, 3, 4, 'vertical');\nconsole.log(board.board);\n\n\n//# sourceURL=webpack://battleship-odin/./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/modules/gameboard.js":
+/*!**********************************!*\
+  !*** ./src/modules/gameboard.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Gameboard)\n/* harmony export */ });\n/* harmony import */ var _ship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ship */ \"./src/modules/ship.js\");\n\n\nclass Gameboard {\n  constructor() {\n    this.board = Array.from(Array(10), () => Array(10).fill(0));\n  }\n\n  place_ship(row, col, length, placing) {\n    if (this.board[row][col]) return false;\n    const ship = new _ship__WEBPACK_IMPORTED_MODULE_0__[\"default\"](length);\n\n    if (placing === 'horizontal') {\n      if (col + length > 10) return false;\n      for (let i = col; i < col + length; i++) {\n        this.board[row][i] = ship;\n      }\n    }\n    if (placing === 'vertical') {\n      if (row + length > 10) return false;\n      for (let i = row; i < row + length; i++) {\n        this.board[i][col] = ship;\n      }\n    }\n    this.reserve_around(row, col, length, placing);\n  }\n\n  reserve_around(row, col, length, placing) {\n    const low = row - 1;\n    const left = col - 1;\n    let up;\n    let right;\n    if (placing === 'horizontal') {\n      up = row + 1;\n      right = col + length;\n    }\n    if (placing === 'vertical') {\n      up = row + length;\n      right = col + 1;\n    }\n    for (let i = low; i <= up; i++) {\n      for (let j = left; j <= right; j++) {\n        if (i < 10 && i >= 0 && j < 10 && j >= 0) {\n          if (this.board[i][j] === 0) this.board[i][j] = 1;\n        }\n      }\n    }\n  }\n}\n\n\n//# sourceURL=webpack://battleship-odin/./src/modules/gameboard.js?");
+
+/***/ }),
+
+/***/ "./src/modules/ship.js":
+/*!*****************************!*\
+  !*** ./src/modules/ship.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (/* binding */ Ship)\n/* harmony export */ });\nclass Ship {\n  constructor(length) {\n    this.length = length;\n    this.hits = 0;\n    this.sunk = false;\n  }\n\n  hit() {\n    this.hits += 1;\n  }\n\n  isSunk() {\n    if (this.hits === this.length) {\n      this.sunk = true;\n    }\n    return this.sunk;\n  }\n}\n\n\n//# sourceURL=webpack://battleship-odin/./src/modules/ship.js?");
 
 /***/ })
 
