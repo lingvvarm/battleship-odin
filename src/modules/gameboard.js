@@ -22,6 +22,7 @@ export default class Gameboard {
       }
     }
     this.reserve_around(row, col, length, placing);
+    return true;
   }
 
   reserve_around(row, col, length, placing) {
@@ -44,5 +45,26 @@ export default class Gameboard {
         }
       }
     }
+  }
+
+  receiveAttack(row, col) {
+    if (row < 10 && row >= 0 && col < 10 && col >= 0) {
+      if (this.board[row][col] === -1) return false;
+      if (typeof this.board[row][col] === 'object') {
+        this.board[row][col].hit(row, col);
+      } else {
+        this.board[row][col] = 1;
+        return [row, col];
+      }
+    }
+  }
+
+  allSunk() {
+    for (let i = 0; i < 10; i++) {
+      for (let j = 0; j < 10; j++) {
+        if (this.board[i][j]?.sunk === false) return false;
+      }
+    }
+    return true;
   }
 }

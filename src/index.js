@@ -1,7 +1,8 @@
 import './style.css';
-import Gameboard from './modules/gameboard';
+import Player from './modules/player';
 
-let board = new Gameboard();
+const p1 = new Player();
 
-board.place_ship(6, 3, 4, 'vertical');
-console.log(board.board);
+p1.generateShips();
+
+console.log(p1.myBoard.board);
