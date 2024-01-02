@@ -15,7 +15,8 @@ export default class Player {
   }
 
   fire(row, col, enemy) {
-    enemy.board.receiveAttack(row, col);
+    if (enemy.myBoard.receiveAttack(row, col) === false) return false;
+    return true;
   }
 
   randCell() {
@@ -30,11 +31,8 @@ export default class Player {
   }
 
   randomShip(length) {
-    let i = 0;
     while (true) {
       if (this.myBoard.place_ship(...this.randCell(), length, this.randPlacing())) return true;
-      if (i === 30) return false;
-      i += 1;
     }
   }
 
@@ -44,5 +42,9 @@ export default class Player {
         this.randomShip(i);
       }
     }
+  }
+
+  isAllSunk() {
+    return this.myBoard.allSunk();
   }
 }

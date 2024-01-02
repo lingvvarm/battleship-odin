@@ -3,26 +3,35 @@ import Ship from "./ship";
 export default class Gameboard {
   constructor() {
     this.board = Array.from(Array(10), () => Array(10).fill(0));
+    this.missed = [];
   }
 
   place_ship(row, col, length, placing) {
     if (this.board[row][col]) return false;
     const ship = new Ship(length);
+    const cells_to_place = [];
 
     if (placing === 'horizontal') {
       if (col + length > 10) return false;
       for (let i = col; i < col + length; i++) {
-        this.board[row][i] = ship;
+        cells_to_place.push([row, i]);
       }
     }
     if (placing === 'vertical') {
       if (row + length > 10) return false;
       for (let i = row; i < row + length; i++) {
-        this.board[i][col] = ship;
+        cells_to_place.push([i, col]);
       }
     }
-    this.reserve_around(row, col, length, placing);
-    return true;
+
+    if (cells_to_place.every((elem) => this.board[elem[0]][elem[1]] === 0)) {
+      cells_to_place.forEach(([x, y]) => {
+        this.board[x][y] = ship;
+      });
+      this.reserve_around(row, col, length, placing);
+      return true;
+    }
+    return false;
   }
 
   reserve_around(row, col, length, placing) {
@@ -49,14 +58,16 @@ export default class Gameboard {
 
   receiveAttack(row, col) {
     if (row < 10 && row >= 0 && col < 10 && col >= 0) {
-      if (this.board[row][col] === -1) return false;
       if (typeof this.board[row][col] === 'object') {
-        this.board[row][col].hit(row, col);
-      } else {
-        this.board[row][col] = 1;
-        return [row, col];
+        if (this.board[row][col].hit(row, col) === false) return false;
+        return 1;
       }
+      this.board[row][col] = 1;
+      if (this.missed.some((elem) => elem[0] === row && elem[1] === col)) return false;
+      this.missed.push([row, col]);
+      return 0;
     }
+    return false;
   }
 
   allSunk() {
