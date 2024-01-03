@@ -34,7 +34,22 @@ export default class Gameboard {
     return false;
   }
 
-  reserve_around(row, col, length, placing) {
+  remove_ship(row, col, length, placing) {
+    if (placing === 'horizontal') {
+      for (let i = col; i < col + length; i++) {
+        this.board[row][i] = 0;
+        this.reserve_around(row, col, length, placing, true);
+      }
+    }
+    if (placing === 'vertical') {
+      for (let i = row; i < row + length; i++) {
+        this.board[i][col] = 0;
+        this.reserve_around(row, col, length, placing, true);
+      }
+    }
+  }
+
+  reserve_around(row, col, length, placing, unreserve=false) {
     const low = row - 1;
     const left = col - 1;
     let up;
@@ -50,7 +65,11 @@ export default class Gameboard {
     for (let i = low; i <= up; i++) {
       for (let j = left; j <= right; j++) {
         if (i < 10 && i >= 0 && j < 10 && j >= 0) {
-          if (this.board[i][j] === 0) this.board[i][j] = 1;
+          if (unreserve) {
+            this.board[i][j] = 0;
+          } else if (this.board[i][j] === 0) {
+            this.board[i][j] = 1;
+          }
         }
       }
     }

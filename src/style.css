@@ -81,6 +81,23 @@ main {
     background-color: black;
 }
 
+.axis-btn {
+    margin-top: 3%;
+    padding: 0.5rem 1rem;
+    background-color: #BB86FC;
+    border-radius: 10%;
+    border: none;
+}
+
+.axis-btn:hover {
+    background-color: #B174FB;
+    cursor: pointer;
+}
+
+.axis-btn:active {
+    background-color: #9B4DF9;
+}
+
 footer {
     background-color: #212121;
     padding: 0.5rem;
