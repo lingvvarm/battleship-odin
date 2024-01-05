@@ -138,9 +138,6 @@ export default class DomController {
             }
           });
         }
-        if (typeof board[i][j] === 'object') {
-          cell.classList.add('cell-with-ship');
-        }
         domBoard.appendChild(cell);
       }
     }
