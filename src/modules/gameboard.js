@@ -23,33 +23,17 @@ export default class Gameboard {
         cells_to_place.push([i, col]);
       }
     }
-
     if (cells_to_place.every((elem) => this.board[elem[0]][elem[1]] === 0)) {
       cells_to_place.forEach(([x, y]) => {
         this.board[x][y] = ship;
       });
-      this.reserve_around(row, col, length, placing);
-      return true;
+      return this.reserve_around(row, col, length, placing);
     }
     return false;
   }
 
-  remove_ship(row, col, length, placing) {
-    if (placing === 'horizontal') {
-      for (let i = col; i < col + length; i++) {
-        this.board[row][i] = 0;
-        this.reserve_around(row, col, length, placing, true);
-      }
-    }
-    if (placing === 'vertical') {
-      for (let i = row; i < row + length; i++) {
-        this.board[i][col] = 0;
-        this.reserve_around(row, col, length, placing, true);
-      }
-    }
-  }
-
   reserve_around(row, col, length, placing, unreserve=false) {
+    let reserved = [];
     const low = row - 1;
     const left = col - 1;
     let up;
@@ -64,6 +48,7 @@ export default class Gameboard {
     }
     for (let i = low; i <= up; i++) {
       for (let j = left; j <= right; j++) {
+        reserved.push([i, j]);
         if (i < 10 && i >= 0 && j < 10 && j >= 0) {
           if (unreserve) {
             this.board[i][j] = 0;
@@ -73,6 +58,7 @@ export default class Gameboard {
         }
       }
     }
+    return reserved;
   }
 
   receiveAttack(row, col) {
@@ -81,7 +67,7 @@ export default class Gameboard {
         if (this.board[row][col].hit(row, col) === false) return false;
         return 1;
       }
-      this.board[row][col] = 1;
+      // this.board[row][col] = 1;
       if (this.missed.some((elem) => elem[0] === row && elem[1] === col)) return false;
       this.missed.push([row, col]);
       return 0;
