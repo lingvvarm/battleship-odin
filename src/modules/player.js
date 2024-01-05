@@ -6,14 +6,6 @@ export default class Player {
     this.myTurn = false;
   }
 
-  getTurn() {
-    this.myTurn = true;
-  }
-
-  passTurn(enemy) {
-    enemy.getTurn();
-  }
-
   fire(row, col, enemy) {
     if (enemy.myBoard.receiveAttack(row, col) === false) return false;
     return true;

@@ -67,7 +67,6 @@ export default class Gameboard {
         if (this.board[row][col].hit(row, col) === false) return false;
         return 1;
       }
-      // this.board[row][col] = 1;
       if (this.missed.some((elem) => elem[0] === row && elem[1] === col)) return false;
       this.missed.push([row, col]);
       return 0;
